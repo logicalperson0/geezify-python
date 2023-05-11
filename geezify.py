@@ -30,11 +30,12 @@ class Geezify:
 
     def __concat_geezified_pairs(geezified_pairs):
         joined_str = ""
+        len_gp = len(geezified_pairs)
 
-        for i in range(len(geezified_pairs)):
+        for i in range(len_gp):
             if (i == 0):
                 joined_str = geezified_pairs[i] + joined_str
-            elif (i % 2 == 0 and geezified_pairs[i] == "፩"):
+            elif (i % 2 == 0 and geezified_pairs[i] == "፩" and i == len_gp - 1):
                 joined_str = "፼" + joined_str
             elif (i % 2 == 0):
                 joined_str = geezified_pairs[i] + "፼" + joined_str
@@ -145,6 +146,7 @@ TESTDATA = [
 class TestGeezify(unittest.TestCase):
     def test_geezify_for_all_test_cases(self):
         for x in TESTDATA:
+            print(f"{x[0]} => {x[1]}")
             print(f"{x[1]} == {Geezify.geezify(x[0])}")
             self.assertEqual(x[1], Geezify.geezify(x[0]))
 
