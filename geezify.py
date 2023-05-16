@@ -47,4 +47,3 @@ class Geezify:
                 joined_str = geezified_pairs[i] + "፻" + joined_str
 
         return joined_str
-
