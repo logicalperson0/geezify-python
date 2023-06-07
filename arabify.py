@@ -50,10 +50,17 @@ class Arabify:
         """This concats the list of nums to give
         its equivalent value for the geez num
         """
+        tenthousand = 1
         arabnum = 0
 
         for i in range(len(arabify_pairs)):
-            arabnum += arabify_pairs[i]
+            if arabify_pairs[0] == 100:
+                arabnum += arabify_pairs[i]
+            elif arabify_pairs[0] == 10000:
+                arabnums = arabify_pairs[0] + arabify_pairs[1]
+                if i > 1:
+                    tenthousand *= arabify_pairs[i]
+                arabnum = tenthousand * arabnums
         
         return arabnum
              
@@ -66,7 +73,7 @@ h = Arabify
 e = h.arabify_num(h, '፻፳፫')
 d = h.arabify_num(h, '፼፲፼')
 xx = h.arabify_num(h, '፼፩፼')
-ww = h.arabify(h, "What is goin on?")
+ww = h.arabify_num(h, "What is goin on?")
 
 print(e)
 print(d)
