@@ -61,21 +61,29 @@ class Arabify:
                 if i > 1:
                     tenthousand *= arabify_pairs[i]
                 arabnum = tenthousand * arabnums
-        
+            elif arabify_pairs[i] == 100 & i > 0:
+                tenthousand *= arabify_pairs[i]
+                arabnum = tenthousand
+                
         return arabnum
              
 
 
 
+# rough test case:
 
 h = Arabify
 
-e = h.arabify_num(h, '፻፳፫')
-d = h.arabify_num(h, '፼፲፼')
-xx = h.arabify_num(h, '፼፩፼')
+e = h.arabify_num(h, '፻፳፫') #123
+d = h.arabify_num(h, '፼፲፼') #100100000
+xx = h.arabify_num(h, '፼፩፼') #100010000
+zz = h.arabify_num(h, '፴፻፴፫') #3033
+ff = h.arabify_num(h, '፼፻፩') #10101
 ww = h.arabify_num(h, "What is goin on?")
 
 print(e)
 print(d)
 print(xx)
 print(ww)
+print(zz)
+print(ff)
