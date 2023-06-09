@@ -1,3 +1,5 @@
+from re import sub
+
 class Arabify:
     """Converts geez numbers to arab numbers
     """
@@ -32,6 +34,10 @@ class Arabify:
             return("Not a valid geez number!")
         else:
             return (sep_geezNum)
+
+    def rollbacking(self, strgeez):
+
+        re.sub(r'^፼', '፩፼', (re.sub(r'^፻', '፩፻', re.sub('፼፻', '፼፩፻', strgeez))))
 
     def arabify_pairs(self, sep_geezNum):
         """pairs the geeznums to their arabnums counter parts
