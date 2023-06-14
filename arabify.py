@@ -3,93 +3,41 @@ from re import sub
 class Arabify:
     """Converts geez numbers to arab numbers
     """
-    arabNums = [1, 2, 3, 4, 5, 6, 7, 8, 9,
-                10, 20, 30, 40, 50, 60, 70, 80, 90,
-                100, 10000]
-        
-    geezNums = ['፩', '፪', '፫', '፬', '፭', '፮', '፯', '፰', '፱',
-                '፲', '፳', '፴', '፵', '፶', '፷', '፸', '፹', '፺',
-                '፻', '፼']
-    
+    numbers_dict = {'፩': 1, '፪': 2, '፫': 3, '፬': 4,
+                    '፭': 5, '፮': 6, '፯': 7, '፰': 8,
+                    '፱': 9, '፲': 10, '፳': 20, '፴': 30,
+                    '፵': 40, '፶': 50, '፷': 60, '፸': 70,
+                    '፹': 80, '፺': 90, ' ': 0}
+
     @staticmethod
-    def arabify_num(self, geezNum):
-        return self.concat_arabify_pairs(self.arabify_pairs(self, (self.arabify(self, geezNum))))
+    def arabify(geezNum):
+        # validate_number
+       quartets = list(reversed(Arabify.__rollback(geezNum).split('፼')))
+       num = sum(map
+                 (lambda ntup:
+                  Arabify.__arabify_quartets(ntup[1]) * (10000 ** ntup[0]),
+                  enumerate(quartets)))
 
+       return(num)
 
-    def arabify(self, geezNum):
-        """This takes in a geez number and seperates it
-        into its individual values
-        """
-        sep_geezNum = []
+    def __rollback(strgeez):
+        return(sub(r'^፼', '፩፼', (sub(r'^፻', '፩፻', sub('፼፻', '፼፩፻', strgeez)))))
 
-        if type(geezNum) != str:
-            raise ValueError("Not a valid string")
-        
-        for i in list(geezNum):
-            for j in self.geezNums:
-                if i == j:
-                    sep_geezNum += i
-
-        if sep_geezNum == []:
-            return("Not a valid geez number!")
-        else:
-            return (sep_geezNum)
-
-    def rollbacking(self, strgeez):
-
-        re.sub(r'^፼', '፩፼', (re.sub(r'^፻', '፩፻', re.sub('፼፻', '፼፩፻', strgeez))))
-
-    def arabify_pairs(self, sep_geezNum):
+    def __arabify_pairs(geezNum):
         """pairs the geeznums to their arabnums counter parts
         """
-        
-        arabify_pairs = []
+        # validate_pairs
+        return(sum([Arabify.numbers_dict[char] for char in geezNum]))
 
-        for i in range(len(sep_geezNum)):
-            for j in range(len(self.geezNums)):
-                if sep_geezNum[i] == self.geezNums[j]:
-                   arabify_pairs.append(self.arabNums[j])
-        
-        return (arabify_pairs)
-    
-    def concat_arabify_pairs(arabify_pairs):
-        """This concats the list of nums to give
-        its equivalent value for the geez num
+    def __arabify_quartets(geezNum):
+        """pairs the geeznums to their arabnums counter parts
         """
-        tenthousand = 1
-        arabnum = 0
+        # validate_quartets
+        paired = geezNum.split('፻')
 
-        for i in range(len(arabify_pairs)):
-            if arabify_pairs[0] == 100:
-                arabnum += arabify_pairs[i]
-            elif arabify_pairs[0] == 10000:
-                arabnums = arabify_pairs[0] + arabify_pairs[1]
-                if i > 1:
-                    tenthousand *= arabify_pairs[i]
-                arabnum = tenthousand * arabnums
-            elif arabify_pairs[i] == 100 & i > 0:
-                tenthousand *= arabify_pairs[i]
-                arabnum = tenthousand
-                
-        return arabnum
-             
+        if len(paired) == 0:
+            paired = ['', '']
+        elif len(paired) == 1:
+            paired = ['', paired[0]]
 
-
-
-# rough test case:
-
-h = Arabify
-
-e = h.arabify_num(h, '፻፳፫') #123
-d = h.arabify_num(h, '፼፲፼') #100100000
-xx = h.arabify_num(h, '፼፩፼') #100010000
-zz = h.arabify_num(h, '፴፻፴፫') #3033
-ff = h.arabify_num(h, '፼፻፩') #10101
-ww = h.arabify_num(h, "What is goin on?")
-
-print(e)
-print(d)
-print(xx)
-print(ww)
-print(zz)
-print(ff)
+        return((Arabify.__arabify_pairs(paired[0]) * 100) + Arabify.__arabify_pairs(paired[1]))
